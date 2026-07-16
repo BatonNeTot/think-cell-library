@@ -156,7 +156,7 @@ namespace tc {
 		template<typename It, typename UnaryPred>
 		[[nodiscard]] constexpr It partition_point( It itBegin, It itEnd, UnaryPred pred ) noexcept {
 			return internal_partition_point( tc_move(itBegin), tc_move(itEnd), [&pred](It it) noexcept {
-				return pred(tc::as_const(*it));
+				return tc_invoke(pred, tc::as_const(*it));
 			} );
 		}
 
@@ -165,7 +165,7 @@ namespace tc {
 			_ASSERT( itBegin!=itEnd );
 			--itEnd;
 			return internal_partition_point( tc_move(itBegin), tc_move(itEnd), [&pred](It it) noexcept {
-				return pred(tc::as_const(*it),tc::as_const(*tc_modified(it, ++_)));
+				return tc_invoke(pred, tc::as_const(*it),tc::as_const(*tc_modified(it, ++_)));
 			} );
 		}
 
